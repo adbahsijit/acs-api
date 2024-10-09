@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout Code') {
+            steps {
+                sh 'git clone https://github.com/adbahsijit/acs-api.git'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                echo "SonarQube Analysis"
+                sh 'sleep 2'
+            }
+        }
+
+        stage('Maven build') {
+            steps {
+                echo "maven build"
+                sh 'sleep 2'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo "docker build"
+                sh 'sleep 2'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace after the build
+            cleanWs()
+        }
+        success {
+            // Quality gate check after successful SonarQube analysis
+            script {
+                echo "success"
+            }
+        }
+    }
+}
